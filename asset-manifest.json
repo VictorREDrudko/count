@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/count.git/static/css/main.f01cb9b4.css",
+    "main.js": "/count.git/static/js/main.fd35afcd.js",
+    "static/js/453.4f1f410f.chunk.js": "/count.git/static/js/453.4f1f410f.chunk.js",
+    "index.html": "/count.git/index.html",
+    "main.f01cb9b4.css.map": "/count.git/static/css/main.f01cb9b4.css.map",
+    "main.fd35afcd.js.map": "/count.git/static/js/main.fd35afcd.js.map",
+    "453.4f1f410f.chunk.js.map": "/count.git/static/js/453.4f1f410f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f01cb9b4.css",
+    "static/js/main.fd35afcd.js"
+  ]
+}
