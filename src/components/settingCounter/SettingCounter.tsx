@@ -1,24 +1,16 @@
 import styled from "styled-components"
 import { Button } from "../button/Button"
+import { SettingValue } from "../settingValue/SettingValue"
 
-type CounterType = {
-  minValue: number
-  maxValue: number
-  valueCounter: number
-  increaseCounter: () => void
-  resetCounter: () => void
-}
-
-export const Counter = (props: CounterType) => {
-  // Change color ValueCounter 
-  const colorCount = props.valueCounter === props.maxValue ? {color: '#b00202'} : {color: '#2c2c2c'};
-
+export const SettingsCounter = () => {
   return (
     <WrapperCounter>
-      <ValueCounter style={colorCount}>{props.valueCounter}</ValueCounter>
+      <ValueCounter>
+        <SettingValue title={"max value:"}/>
+        <SettingValue title={"min value:"}/>
+      </ValueCounter>
       <WrapperButton>
-        <Button title={"inc"} callback={props.increaseCounter} disabled={props.valueCounter === props.maxValue}/> 
-        <Button title={"reset"} callback={props.resetCounter} disabled={props.valueCounter === props.minValue}/>
+        <Button title={"set"} callback={()=>{}} disabled={false}/>
       </WrapperButton>
     </WrapperCounter>
   )
@@ -40,7 +32,7 @@ const ValueCounter = styled.div`
   background-color: rgb(128, 253, 106);
   border-radius: 10px;
   color: #2c2c2c;
-  font-size: 95px;
+  font-size: 25px;
   text-align: center;
   vertical-align: center;
   font-weight: 600;

@@ -2,11 +2,11 @@ import styled from "styled-components"
 
 type ButtonPropsType = {
   title: string
-  active: boolean
+  disabled: boolean
   callback: ()=>void
 }
 
-export const Button = ({title, active, callback} : ButtonPropsType) => {
+export const Button = ({title, disabled, callback} : ButtonPropsType) => {
   const backgroundColorDisabledButton = {
     backgroundColor: '#676767',
     color: '#2c2c2c',
@@ -17,10 +17,10 @@ export const Button = ({title, active, callback} : ButtonPropsType) => {
     color: '#2c2c2c',
   };
 
-  const backgroundColorButton = active ? backgroundColorDisabledButton : backgroundColorActiveButton;
+  const backgroundColorButton = disabled ? backgroundColorDisabledButton : backgroundColorActiveButton;
 
   return (
-    <ButtonStyle style={backgroundColorButton} disabled={active} onClick={callback}>{title}</ButtonStyle>
+    <ButtonStyle style={backgroundColorButton} disabled={disabled} onClick={callback}>{title}</ButtonStyle>
   )
 }
 
