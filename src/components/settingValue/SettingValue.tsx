@@ -2,13 +2,17 @@ import styled from "styled-components"
 
 type SettingValueType = {
   title: string
+  minValue?: number
+  maxValue?: number
 }
 
 export const SettingValue = (props: SettingValueType) => {
+  const choseValue = props.maxValue ? props.maxValue : props.minValue
+
   return (
     <SettingValueWrapper>
       <div>{props.title}</div>
-      <Input type={"text"} placeholder="0"></Input>
+      <Input type={"text"} placeholder="0" value={choseValue}></Input>
     </SettingValueWrapper>
   )
 }

@@ -2,12 +2,18 @@ import styled from "styled-components"
 import { Button } from "../button/Button"
 import { SettingValue } from "../settingValue/SettingValue"
 
-export const SettingsCounter = () => {
+type SettingsCounterType = {
+  minValue: number
+  maxValue: number
+  valueCounter: number
+}
+
+export const SettingsCounter = (props: SettingsCounterType) => {
   return (
     <WrapperCounter>
       <ValueCounter>
-        <SettingValue title={"max value:"}/>
-        <SettingValue title={"min value:"}/>
+        <SettingValue title={"max value:"} maxValue={props.maxValue}/>
+        <SettingValue title={"min value:"} minValue={props.minValue}/>
       </ValueCounter>
       <WrapperButton>
         <Button title={"set"} callback={()=>{}} disabled={false}/>

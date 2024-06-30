@@ -18,7 +18,9 @@ function App() {
 
   return (
     <div className="App">
-      <SettingsCounter/>
+      <SettingsCounter  minValue={minValue} 
+                        maxValue={maxValue} 
+                        valueCounter={valueCounter}/>
       <Counter  minValue={minValue} 
                 maxValue={maxValue} 
                 valueCounter={valueCounter}
