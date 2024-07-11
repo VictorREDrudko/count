@@ -1,53 +1,44 @@
-import styled from "styled-components"
+import { useState } from "react";
 import { Button } from "../button/Button"
-import { SettingValue } from "../settingValue/SettingValue"
+import { Input } from "../input/Input"
 
-type SettingsCounterType = {
-  minValue: number
+type SettingCounterProps = {
   maxValue: number
-  valueCounter: number
+  minValue: number
+  changeValue: (valueMax: number, valueMin: number) => void
+  changeErr: (message: string) => void
 }
 
-export const SettingsCounter = (props: SettingsCounterType) => {
+export const SettingCounter = ({maxValue, minValue, changeValue, changeErr} : SettingCounterProps)=> {
+  // Local State setting value
+  const [maxValueSetting, setMaxValueSetting] = useState<number>(maxValue);
+  const [minValueSetting, setMinValueSetting] = useState<number>(minValue);
+
+  const changeMaxValue = (valueInput: number) => {
+    valueInput > minValueSetting ? changeErr("Enter values and press 'set'") : changeErr("Incorrect value")
+    setMaxValueSetting(valueInput)
+  }
+
+  const changeMinValue = (valueInput: number) => {
+    valueInput < maxValueSetting ? changeErr("Enter values and press 'set'") : changeErr("Incorrect value")
+    setMinValueSetting(valueInput);
+   
+
+  }
+
+  const onClickHandler = () => {
+    changeValue(maxValueSetting, minValueSetting)
+  }
+
   return (
-    <WrapperCounter>
-      <ValueCounter>
-        <SettingValue title={"max value:"} maxValue={props.maxValue}/>
-        <SettingValue title={"min value:"} minValue={props.minValue}/>
-      </ValueCounter>
-      <WrapperButton>
-        <Button title={"set"} callback={()=>{}} disabled={false}/>
-      </WrapperButton>
-    </WrapperCounter>
+    <div>
+      <div>max value:</div>
+      <Input type="number" value={maxValueSetting} onChange={changeMaxValue}/>
+      <div>min value:</div>
+      <Input type="number" value={minValueSetting} onChange={changeMinValue}/>
+      <div>
+        <Button title={"set"} callback={onClickHandler} disabled={false}/>
+      </div>
+    </div>
   )
 }
-
-const WrapperCounter = styled.div`
-  max-width: 280px;
-  width: 100%;
-  border: 3px solid rgb(128, 253, 106);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: stretch;
-`
-
-const ValueCounter = styled.div`
-  margin: 15px;
-  background-color: rgb(128, 253, 106);
-  border-radius: 10px;
-  color: #2c2c2c;
-  font-size: 25px;
-  text-align: center;
-  vertical-align: center;
-  font-weight: 600;
-`
-
-const WrapperButton = styled.div`
-  margin: 15px;
-  border: 3px solid rgb(128, 253, 106);
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around
-`

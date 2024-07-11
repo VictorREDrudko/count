@@ -1,31 +1,58 @@
 import { useState } from 'react';
 import './App.css';
 import { Counter } from './components/counter/Counter';
-import { SettingsCounter } from './components/settingCounter/SettingCounter';
+import { SettingCounter } from './components/settingCounter/SettingCounter';
 
 function App() {
-  const minValue = 0;
-  const maxValue = 10;
-  let [valueCounter, setValueCounter] = useState(minValue);
+  // Global State setting value
+  const [maxValue, setMaxValue] = useState(3);
+  const [minValue, setMinValue] = useState(0);
+  // Global State counter value
+  const [valueCounter, setValueCounter] = useState<number>(minValue);
+
+  // Global State Error/Enter
+  const [error, setError] = useState(false)
+
+  // Global State message
+  const [message, setMessage] = useState<string>('')
+
 
   const increaseCounter = () => {
     valueCounter === maxValue ? setValueCounter(maxValue) : setValueCounter(valueCounter + 1)
   }
 
   const resetCounter = () => {
-    setValueCounter(0);
+    setValueCounter(minValue);
+  }
+
+  const changeValue = (valueMax: number, valueMin: number) => {
+    setMaxValue(valueMax);
+    setMinValue(valueMin);
+    setValueCounter(valueMin);
+    setError(false);
+  }
+
+  const changeErr = (message: string) => {
+    setError(true);
+    setMessage(message);
   }
 
   return (
     <div className="App">
-      <SettingsCounter  minValue={minValue} 
-                        maxValue={maxValue} 
-                        valueCounter={valueCounter}/>
+
+      <SettingCounter maxValue={maxValue} 
+                      minValue={minValue} 
+                      changeValue={changeValue}
+                      changeErr={changeErr}/>
+
+        
       <Counter  minValue={minValue} 
                 maxValue={maxValue} 
                 valueCounter={valueCounter}
                 increaseCounter={increaseCounter}
-                resetCounter={resetCounter}/>
+                resetCounter={resetCounter}
+                error={error}
+                message={message}/>
     </div>
   );
 }
