@@ -5,7 +5,7 @@ type CounterType = {
   minValue: number
   maxValue: number
   valueCounter: number
-  error: boolean
+  correctSettingValue: boolean
   message: string
   increaseCounter: () => void
   resetCounter: () => void
@@ -15,9 +15,14 @@ export const Counter = (props: CounterType) => {
   // Change color ValueCounter 
   const colorCount = props.valueCounter === props.maxValue ? {color: '#b00202'} : {color: '#2c2c2c'};
 
+  const ErrorTrueMessage = props.message === "Enter values and press 'set'" ? {color: '#2c2c2c'} : {color: '#b00202'};
+
   return (
     <WrapperCounter>
-      <ValueCounter style={colorCount}>{props.error ? props.message : props.valueCounter }</ValueCounter>
+      <ValueCounterWrapper>
+        <ValueCounter style={colorCount}>{props.correctSettingValue ? '' : props.valueCounter }</ValueCounter>
+        <Message style={ErrorTrueMessage}>{props.correctSettingValue ? props.message : ''}</Message>
+      </ValueCounterWrapper>
       <WrapperButton>
         <Button title={"inc"} callback={props.increaseCounter} disabled={props.valueCounter === props.maxValue}/> 
         <Button title={"reset"} callback={props.resetCounter} disabled={props.valueCounter === props.minValue}/>
@@ -37,15 +42,31 @@ const WrapperCounter = styled.div`
   align-items: stretch;
 `
 
-const ValueCounter = styled.div`
+const ValueCounterWrapper = styled.div`
+  /* padding: 50px 0; */
+  min-height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 15px;
   background-color: rgb(128, 253, 106);
   border-radius: 10px;
+`
+
+const Message = styled.span`
   color: #2c2c2c;
-  font-size: 40px;
+  font-size: 35px;
   text-align: center;
   vertical-align: center;
   font-weight: 600;
+`
+
+const ValueCounter = styled.span`
+color: #2c2c2c;
+font-size: 100px;
+text-align: center;
+vertical-align: center;
+font-weight: 600;
 `
 
 const WrapperButton = styled.div`

@@ -11,7 +11,7 @@ function App() {
   const [valueCounter, setValueCounter] = useState<number>(minValue);
 
   // Global State Error/Enter
-  const [error, setError] = useState(false)
+  const [correctSettingValue, setCorrectSettingValue] = useState(true)
 
   // Global State message
   const [message, setMessage] = useState<string>('')
@@ -29,12 +29,12 @@ function App() {
     setMaxValue(valueMax);
     setMinValue(valueMin);
     setValueCounter(valueMin);
-    setError(false);
+    setCorrectSettingValue(false);
   }
 
-  const changeErr = (message: string) => {
-    setError(true);
-    setMessage(message);
+  const changeErr = (correctValue: boolean) => {
+    setCorrectSettingValue(correctValue);
+    // setMessage(message);
   }
 
   return (
@@ -43,7 +43,8 @@ function App() {
       <SettingCounter maxValue={maxValue} 
                       minValue={minValue} 
                       changeValue={changeValue}
-                      changeErr={changeErr}/>
+                      changeCorrectSettingValue={changeErr}
+                      correctSettingValue={correctSettingValue}/>
 
         
       <Counter  minValue={minValue} 
@@ -51,7 +52,7 @@ function App() {
                 valueCounter={valueCounter}
                 increaseCounter={increaseCounter}
                 resetCounter={resetCounter}
-                error={error}
+                correctSettingValue={correctSettingValue}
                 message={message}/>
     </div>
   );
