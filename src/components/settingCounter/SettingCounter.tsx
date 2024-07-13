@@ -6,23 +6,28 @@ import styled from "styled-components";
 type SettingCounterProps = {
   maxValue: number
   minValue: number
-  correctSettingValue: boolean
+  errorInput: boolean
   changeValue: (valueMax: number, valueMin: number) => void
-  changeCorrectSettingValue: (correctValue: boolean) => void
+  changeErrorInput: (error: boolean) => void
 }
 
-export const SettingCounter = ({maxValue, minValue, correctSettingValue, changeValue, changeCorrectSettingValue} : SettingCounterProps)=> {
+export const SettingCounter = ({maxValue, minValue, changeErrorInput, changeValue, errorInput} : SettingCounterProps)=> {
   // Local State setting value
   const [maxValueSetting, setMaxValueSetting] = useState<number>(maxValue);
   const [minValueSetting, setMinValueSetting] = useState<number>(minValue);
 
+    // Local State button
+    const [disabled, setDisabled] = useState(true)
+
     const changeMaxValue = (valueInput: number) => {
-    valueInput > minValueSetting ? changeCorrectSettingValue(false) : changeCorrectSettingValue(true);
-    setMaxValueSetting(valueInput)
+      valueInput <= minValueSetting ? setDisabled(true) : setDisabled(false)
+      valueInput <= minValueSetting ? changeErrorInput(true) : changeErrorInput(false);
+      setMaxValueSetting(valueInput)
   }
 
   const changeMinValue = (valueInput: number) => {
-    valueInput < maxValueSetting && valueInput >= 0 ? changeCorrectSettingValue(false) : changeCorrectSettingValue(true)
+    valueInput >= maxValueSetting || valueInput < 0 ? setDisabled(true) : setDisabled(false)
+    valueInput >= maxValueSetting || valueInput < 0 ? changeErrorInput(true) : changeErrorInput(false);
     setMinValueSetting(valueInput);
   }
 
@@ -30,7 +35,8 @@ export const SettingCounter = ({maxValue, minValue, correctSettingValue, changeV
     changeValue(maxValueSetting, minValueSetting)
   }
 
-  const inputStyle = correctSettingValue ? {color: '#b00202'} : {color: '#2c2c2c'};
+  const inputStyleMaxValue = maxValueSetting <= minValueSetting ? {color: '#b00202', outline: "2px solid red", backgroundColor: '#fccfcf'} : {color: '#2c2c2c'};
+  const inputStyleMinValue = maxValueSetting <= minValueSetting || minValueSetting < 0 ? {color: '#b00202', outline: "2px solid red", backgroundColor: '#fccfcf'} : {color: '#2c2c2c'};
 
 
   return (
@@ -38,15 +44,15 @@ export const SettingCounter = ({maxValue, minValue, correctSettingValue, changeV
       <ValueSettingCounterWrapper>
         <div>
           <span>max value:</span>
-          <Input style={inputStyle} type="number" value={maxValueSetting} onChange={changeMaxValue}/>
+          <Input style={inputStyleMaxValue} type="number" value={maxValueSetting} onChange={changeMaxValue}/>
         </div>
         <div>
           <span>min value:</span>
-          <Input style={inputStyle} type="number" value={minValueSetting} onChange={changeMinValue}/>
+          <Input style={inputStyleMinValue} type="number" value={minValueSetting} onChange={changeMinValue}/>
         </div>
       </ValueSettingCounterWrapper>
       <WrapperButton>
-        <Button title={"set"} callback={onClickHandler} disabled={maxValue === maxValueSetting && minValue === minValueSetting ? true : correctSettingValue}/>
+        <Button title={"set"} callback={onClickHandler} disabled={disabled}/>
       </WrapperButton>
     </WrapperSettingCounter>
   )

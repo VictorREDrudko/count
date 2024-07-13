@@ -5,7 +5,7 @@ type CounterType = {
   minValue: number
   maxValue: number
   valueCounter: number
-  correctSettingValue: boolean
+  errorInput: boolean
   message: string
   increaseCounter: () => void
   resetCounter: () => void
@@ -20,8 +20,8 @@ export const Counter = (props: CounterType) => {
   return (
     <WrapperCounter>
       <ValueCounterWrapper>
-        <ValueCounter style={colorCount}>{props.correctSettingValue ? '' : props.valueCounter }</ValueCounter>
-        <Message style={ErrorTrueMessage}>{props.correctSettingValue ? props.message : ''}</Message>
+        <ValueCounter style={colorCount}>{props.errorInput ? '' : props.valueCounter }</ValueCounter>
+        <Message style={ErrorTrueMessage}>{props.errorInput ? props.message : ''}</Message>
       </ValueCounterWrapper>
       <WrapperButton>
         <Button title={"inc"} callback={props.increaseCounter} disabled={props.valueCounter === props.maxValue}/> 
