@@ -1,106 +1,81 @@
 import { useState } from "react";
 import { Button } from "../button/Button"
 import { Input } from "../input/Input"
-import styled from "styled-components";
+import { MessageType } from "../../App";
+import { S } from "./SettingCounter_Styles"
 
-type SettingCounterProps = {
+// TYPE PROPS
+type SettingCounterType = {
   maxValue: number
   minValue: number
-  errorInput: boolean
-  changeValue: (valueMax: number, valueMin: number) => void
-  changeErrorInput: (error: boolean) => void
-  addMessage: (message: string) => void
+  setNewValues: (newMaxValue: number, newMinValue: number) => void
+  changeValidInput: (valid: boolean) => void
+  addMessage: (message: MessageType) => void
 }
 
-export const SettingCounter = ({maxValue, minValue, changeErrorInput, changeValue, addMessage} : SettingCounterProps)=> {
-  // Local State setting value
-  const [maxValueSetting, setMaxValueSetting] = useState<number>(maxValue);
-  const [minValueSetting, setMinValueSetting] = useState<number>(minValue);
+export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValues, addMessage} : SettingCounterType)=> {
+  // LOCAL STATE 
+  // Entered value from input
+  const [maxEnteredValue, setMaxEnteredValue] = useState<number>(maxValue);
+  const [minEnteredValue, setMinEnteredValue] = useState<number>(minValue);
+  // Active/Inactive button
+  const [disabled, setDisabled] = useState(true)
 
-    // Local State button
-    const [disabled, setDisabled] = useState(true)
+  // FUNCTIONS
+  const changeMaxValue = (valueInput: string) => {
+    const validMaxValueInput = +valueInput > minEnteredValue;
 
-    const changeMaxValue = (valueInput: number) => {
-      valueInput <= minValueSetting ? setDisabled(true) : setDisabled(false)
-      valueInput <= minValueSetting ? changeErrorInput(true) : changeErrorInput(false);
-      valueInput <= minValueSetting ? addMessage('Incorrect value') : addMessage('Enter values and press "set"')
-      setMaxValueSetting(valueInput)
+    validMaxValueInput ? setDisabled(false) : setDisabled(true);
+    validMaxValueInput ? changeValidInput(true) : changeValidInput(false);
+    validMaxValueInput ? addMessage('Enter values and press "set"') : addMessage('Incorrect value');
+
+    setMaxEnteredValue(+valueInput);
   }
 
-  const changeMinValue = (valueInput: number) => {
-    valueInput >= maxValueSetting || valueInput < 0 ? setDisabled(true) : setDisabled(false)
-    valueInput >= maxValueSetting || valueInput < 0 ? changeErrorInput(true) : changeErrorInput(false);
-    valueInput >= maxValueSetting || valueInput < 0 ? addMessage('Incorrect value') : addMessage('Enter values and press "set"')
-    setMinValueSetting(valueInput);
+  const changeMinValue = (valueInput: string) => {
+    const validMinValueInput = +valueInput < maxEnteredValue && +valueInput >= 0 ;
+
+    validMinValueInput ? setDisabled(false) : setDisabled(true);
+    validMinValueInput ? changeValidInput(true) : changeValidInput(false);
+    validMinValueInput ? addMessage('Enter values and press "set"') : addMessage('Incorrect value');
+
+    setMinEnteredValue(+valueInput);
   }
 
-  const onClickHandler = () => {
-    changeValue(maxValueSetting, minValueSetting);
+  const onClickButtonHandler = () => {
+    setNewValues(maxEnteredValue, minEnteredValue);
     setDisabled(true);
     addMessage('');
-    localStorage.setItem("maxValue", maxValueSetting.toString())
-    localStorage.setItem("minValue", minValueSetting.toString())
+    localStorage.setItem("maxValue", maxEnteredValue.toString())
+    localStorage.setItem("minValue", minEnteredValue.toString())
   }
 
-  const inputStyleMaxValue = maxValueSetting <= minValueSetting ? {color: '#b00202', outline: "2px solid red", backgroundColor: '#fccfcf'} : {color: '#2c2c2c'};
-  const inputStyleMinValue = maxValueSetting <= minValueSetting || minValueSetting < 0 ? {color: '#b00202', outline: "2px solid red", backgroundColor: '#fccfcf'} : {color: '#2c2c2c'};
+  // Style invalid input
+  const invalidInputStyle = {
+    color: '#b00202', 
+    outline: "2px solid red", 
+    backgroundColor: '#fccfcf'
+  }
 
+  const inputStyleMaxValue = maxEnteredValue <= minEnteredValue ? invalidInputStyle : {};
+  const inputStyleMinValue = maxEnteredValue <= minEnteredValue || minEnteredValue < 0 ? invalidInputStyle : {};
 
+  // MARKUP
   return (
-    <WrapperSettingCounter>
-      <ValueSettingCounterWrapper>
+    <S.WrapperCounter>
+      <S.WrapperEnteredValue>
         <div>
           <span>max value:</span>
-          <Input style={inputStyleMaxValue} type="number" value={maxValueSetting} onChange={changeMaxValue}/>
+          <Input style={inputStyleMaxValue} type="number" value={maxEnteredValue.toString()} onChangeInput={changeMaxValue}/>
         </div>
         <div>
           <span>min value:</span>
-          <Input style={inputStyleMinValue} type="number" value={minValueSetting} onChange={changeMinValue}/>
+          <Input style={inputStyleMinValue} type="number" value={minEnteredValue.toString()} onChangeInput={changeMinValue}/>
         </div>
-      </ValueSettingCounterWrapper>
-      <WrapperButton>
-        <Button title={"set"} callback={onClickHandler} disabled={disabled}/>
-      </WrapperButton>
-    </WrapperSettingCounter>
+      </S.WrapperEnteredValue>
+      <S.WrapperButton>
+        <Button title={"set"} onClickButton={onClickButtonHandler} disabled={disabled}/>
+      </S.WrapperButton>
+    </S.WrapperCounter>
   )
 }
-
-const WrapperSettingCounter = styled.div`
-  max-width: 280px;
-  width: 100%;
-  border: 3px solid rgb(128, 253, 106);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: stretch;
-`
-
-const ValueSettingCounterWrapper = styled.div`
-  /* padding: 50px 0; */
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  margin: 15px;
-  background-color: rgb(128, 253, 106);
-  border-radius: 10px;
-
-  & span {
-    color: #2c2c2c;
-    font-size: 25px;
-    font-weight: 700;
-    display: inline-block;
-    margin-right: 10px;
-  }
-`
-
-const WrapperButton = styled.div`
-  margin: 15px;
-  border: 3px solid rgb(128, 253, 106);
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around
-`

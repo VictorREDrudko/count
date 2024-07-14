@@ -1,12 +1,13 @@
-import styled from "styled-components"
+import { S } from "./Button_Styles"
 
 type ButtonPropsType = {
   title: string
   disabled: boolean
-  callback: ()=>void
+  onClickButton: ()=>void
 }
 
-export const Button = ({title, disabled, callback} : ButtonPropsType) => {
+export const Button = ({title, disabled, onClickButton} : ButtonPropsType) => {
+  // Style disabled/active button
   const backgroundColorDisabledButton = {
     backgroundColor: '#676767',
     color: '#2c2c2c',
@@ -20,20 +21,6 @@ export const Button = ({title, disabled, callback} : ButtonPropsType) => {
   const backgroundColorButton = disabled ? backgroundColorDisabledButton : backgroundColorActiveButton;
 
   return (
-    <ButtonStyle style={backgroundColorButton} disabled={disabled} onClick={callback}>{title}</ButtonStyle>
+    <S.ButtonStyle style={backgroundColorButton} disabled={disabled} onClick={onClickButton}>{title}</S.ButtonStyle>
   )
 }
-
-const ButtonStyle = styled.button`
-  padding: 5px 15px;
-  margin: 15px;
-  border-radius: 10px;
-  font-size: 30px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:active {
-    background-color: #2c2c2c !important; 
-  }
-`

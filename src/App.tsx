@@ -3,81 +3,62 @@ import './App.css';
 import { Counter } from './components/counter/Counter';
 import { SettingCounter } from './components/settingCounter/SettingCounter';
 
+export type MessageType = 'Enter values and press "set"' | '' | 'Incorrect value'
+
 function App() {
-
-  // Global State setting value
-  const [maxValue, setMaxValue] = useState(localStorage.getItem('maxValue') ? Number(localStorage.getItem('maxValue')) : 4);
-  const [minValue, setMinValue] = useState(localStorage.getItem('minValue') ? Number(localStorage.getItem('minValue')) : 0);
-
-  // useEffect(()=>{
-  //   let maxValueInLocalstorage = localStorage.getItem('maxValue');
-  //   // let minValueInLocalstorage = localStorage.getItem('minValue');
-  //   console.log(maxValueInLocalstorage)
-
-  //   if(maxValueInLocalstorage) {
-  //     let newMaxValue = JSON.parse(maxValueInLocalstorage);
-  //     console.log(newMaxValue)
-  //     setMaxValue(newMaxValue);
-  //   }
-
-    // if(minValueInLocalstorage) {
-    //   let newMinValue = JSON.parse(minValueInLocalstorage);
-    //   setMinValue(newMinValue)
-    // }
-  // }, [])
-
-
-  // Global State counter value
+  // GLOBAL STATE
+  // Value from settings (initial state from local storage)
+  const [maxValue, setMaxValue] = useState<number>(localStorage.getItem('maxValue') ? Number(localStorage.getItem('maxValue')) : 5);
+  const [minValue, setMinValue] = useState<number>(localStorage.getItem('minValue') ? Number(localStorage.getItem('minValue')) : 0);
+  // Counter value 
   const [valueCounter, setValueCounter] = useState<number>(minValue);
-
-  // Global State Error/Enter
-  const [errorInput, setErrorInput] = useState(false)
-
-  // Global State message
-  const [message, setMessage] = useState<string>('')
+  // Boolean value from input (valid/invalid)
+  const [validInput, setValidInput] = useState<boolean>(true)
+  // Message in the counter
+  const [message, setMessage] = useState<MessageType>('')
 
 
+  // FUNCTIONS
   const increaseCounter = () => {
-    valueCounter === maxValue ? setValueCounter(maxValue) : setValueCounter(valueCounter + 1)
+    setValueCounter(valueCounter + 1);
   }
 
   const resetCounter = () => {
     setValueCounter(minValue);
   }
 
-  const changeValue = (valueMax: number, valueMin: number) => {
-    setMaxValue(valueMax);
-    setMinValue(valueMin);
-    setValueCounter(valueMin);
-    setErrorInput(false);
+  const setNewValues = (newMaxValue: number, newMinValue: number) => {
+    setMaxValue(newMaxValue);
+    setMinValue(newMinValue);
+    setValueCounter(newMinValue);
+    setValidInput(true);
   }
 
-  const changeErrorInput = (error: boolean) => {
-    setErrorInput(error);
+  const changeValidInput = (valid: boolean) => {
+    setValidInput(valid);
   }
 
-  const addMessage = (message: string) => {
+  const addMessage = (message: MessageType) => {
     setMessage(message);
   }
 
+  // MARKUP
   return (
     <div className="App">
-
       <SettingCounter maxValue={maxValue} 
                       minValue={minValue} 
-                      changeValue={changeValue}
-                      changeErrorInput={changeErrorInput}
-                      errorInput={errorInput}
-                      addMessage={addMessage}/>
+                      setNewValues={setNewValues}
+                      changeValidInput={changeValidInput}
+                      addMessage={addMessage}
+      />
 
-        
       <Counter  minValue={minValue} 
                 maxValue={maxValue} 
                 valueCounter={valueCounter}
+                message={message}
                 increaseCounter={increaseCounter}
                 resetCounter={resetCounter}
-                errorInput={errorInput}
-                message={message}/>
+      />
     </div>
   );
 }

@@ -1,33 +1,19 @@
 import { ChangeEvent, useState } from "react"
-import styled from "styled-components"
+import { S } from "./Input_Styles"
 
 type InputType = {
   type: string
-  value: number
+  value: string
   style: {}
-  onChange: (valueInput: number) => void
+  onChangeInput: (valueInput: string) => void
 }
 
-export const Input = ({type, value, style, onChange} : InputType) => {
+export const Input = ({type, value, style, onChangeInput} : InputType) => {
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(+event.currentTarget.value)
+    onChangeInput(event.currentTarget.value)
   }
 
   return (
-    <>
-      <InputStyle style={style} type={type} value={value} onChange={onChangeHandler}></InputStyle>
-    </>
+    <S.InputStyle style={style} type={type} value={value} onChange={onChangeHandler}/>
   )
 }
-
-const InputStyle = styled.input`
-  width: 60px;
-  text-align: center;
-  vertical-align: center;
-  border-radius: 5px;
-  border: none;
-  padding: 5px;
-  color: #2c2c2c;
-  font-size: 25px;
-  font-weight: 600;
-`
