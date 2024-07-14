@@ -34,7 +34,10 @@ function App() {
 
   const changeErrorInput = (error: boolean) => {
     setErrorInput(error);
-    // setMessage(message);
+  }
+
+  const addMessage = (message: string) => {
+    setMessage(message);
   }
 
   return (
@@ -44,7 +47,8 @@ function App() {
                       minValue={minValue} 
                       changeValue={changeValue}
                       changeErrorInput={changeErrorInput}
-                      errorInput={errorInput}/>
+                      errorInput={errorInput}
+                      addMessage={addMessage}/>
 
         
       <Counter  minValue={minValue} 

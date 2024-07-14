@@ -15,17 +15,17 @@ export const Counter = (props: CounterType) => {
   // Change color ValueCounter 
   const colorCount = props.valueCounter === props.maxValue ? {color: '#b00202'} : {color: '#2c2c2c'};
 
-  const ErrorTrueMessage = props.message === "Enter values and press 'set'" ? {color: '#2c2c2c'} : {color: '#b00202'};
+  const ErrorTrueMessage = props.message === "Incorrect value" ? {color: '#b00202'} : {color: '#2c2c2c'};
 
   return (
     <WrapperCounter>
       <ValueCounterWrapper>
-        <ValueCounter style={colorCount}>{props.errorInput ? '' : props.valueCounter }</ValueCounter>
-        <Message style={ErrorTrueMessage}>{props.errorInput ? props.message : ''}</Message>
+        <ValueCounter style={colorCount}>{props.message ? '' : props.valueCounter}</ValueCounter>
+        <Message style={ErrorTrueMessage}>{props.message ? props.message : ''}</Message>
       </ValueCounterWrapper>
       <WrapperButton>
-        <Button title={"inc"} callback={props.increaseCounter} disabled={props.valueCounter === props.maxValue}/> 
-        <Button title={"reset"} callback={props.resetCounter} disabled={props.valueCounter === props.minValue}/>
+        <Button title={"inc"} callback={props.increaseCounter} disabled={props.message ? true : props.valueCounter === props.maxValue}/> 
+        <Button title={"reset"} callback={props.resetCounter} disabled={props.message ? true : props.valueCounter === props.minValue}/>
       </WrapperButton>
     </WrapperCounter>
   )

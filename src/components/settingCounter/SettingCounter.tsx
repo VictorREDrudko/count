@@ -9,9 +9,10 @@ type SettingCounterProps = {
   errorInput: boolean
   changeValue: (valueMax: number, valueMin: number) => void
   changeErrorInput: (error: boolean) => void
+  addMessage: (message: string) => void
 }
 
-export const SettingCounter = ({maxValue, minValue, changeErrorInput, changeValue, errorInput} : SettingCounterProps)=> {
+export const SettingCounter = ({maxValue, minValue, changeErrorInput, changeValue, addMessage} : SettingCounterProps)=> {
   // Local State setting value
   const [maxValueSetting, setMaxValueSetting] = useState<number>(maxValue);
   const [minValueSetting, setMinValueSetting] = useState<number>(minValue);
@@ -22,17 +23,21 @@ export const SettingCounter = ({maxValue, minValue, changeErrorInput, changeValu
     const changeMaxValue = (valueInput: number) => {
       valueInput <= minValueSetting ? setDisabled(true) : setDisabled(false)
       valueInput <= minValueSetting ? changeErrorInput(true) : changeErrorInput(false);
+      valueInput <= minValueSetting ? addMessage('Incorrect value') : addMessage('Enter values and press "set"')
       setMaxValueSetting(valueInput)
   }
 
   const changeMinValue = (valueInput: number) => {
     valueInput >= maxValueSetting || valueInput < 0 ? setDisabled(true) : setDisabled(false)
     valueInput >= maxValueSetting || valueInput < 0 ? changeErrorInput(true) : changeErrorInput(false);
+    valueInput >= maxValueSetting || valueInput < 0 ? addMessage('Incorrect value') : addMessage('Enter values and press "set"')
     setMinValueSetting(valueInput);
   }
 
   const onClickHandler = () => {
-    changeValue(maxValueSetting, minValueSetting)
+    changeValue(maxValueSetting, minValueSetting);
+    setDisabled(true);
+    addMessage('');
   }
 
   const inputStyleMaxValue = maxValueSetting <= minValueSetting ? {color: '#b00202', outline: "2px solid red", backgroundColor: '#fccfcf'} : {color: '#2c2c2c'};
