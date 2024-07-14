@@ -1,12 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Counter } from './components/counter/Counter';
 import { SettingCounter } from './components/settingCounter/SettingCounter';
 
 function App() {
+
   // Global State setting value
-  const [maxValue, setMaxValue] = useState(3);
-  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(localStorage.getItem('maxValue') ? Number(localStorage.getItem('maxValue')) : 4);
+  const [minValue, setMinValue] = useState(localStorage.getItem('minValue') ? Number(localStorage.getItem('minValue')) : 0);
+
+  // useEffect(()=>{
+  //   let maxValueInLocalstorage = localStorage.getItem('maxValue');
+  //   // let minValueInLocalstorage = localStorage.getItem('minValue');
+  //   console.log(maxValueInLocalstorage)
+
+  //   if(maxValueInLocalstorage) {
+  //     let newMaxValue = JSON.parse(maxValueInLocalstorage);
+  //     console.log(newMaxValue)
+  //     setMaxValue(newMaxValue);
+  //   }
+
+    // if(minValueInLocalstorage) {
+    //   let newMinValue = JSON.parse(minValueInLocalstorage);
+    //   setMinValue(newMinValue)
+    // }
+  // }, [])
+
+
   // Global State counter value
   const [valueCounter, setValueCounter] = useState<number>(minValue);
 

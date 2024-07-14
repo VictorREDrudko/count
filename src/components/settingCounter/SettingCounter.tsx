@@ -38,6 +38,8 @@ export const SettingCounter = ({maxValue, minValue, changeErrorInput, changeValu
     changeValue(maxValueSetting, minValueSetting);
     setDisabled(true);
     addMessage('');
+    localStorage.setItem("maxValue", maxValueSetting.toString())
+    localStorage.setItem("minValue", minValueSetting.toString())
   }
 
   const inputStyleMaxValue = maxValueSetting <= minValueSetting ? {color: '#b00202', outline: "2px solid red", backgroundColor: '#fccfcf'} : {color: '#2c2c2c'};
