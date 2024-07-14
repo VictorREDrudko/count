@@ -3,8 +3,6 @@ import './App.css';
 import { Counter } from './components/counter/Counter';
 import { SettingCounter } from './components/settingCounter/SettingCounter';
 
-export type MessageType = 'Enter values and press "set"' | '' | 'Incorrect value'
-
 function App() {
   // GLOBAL STATE
   // Value from settings (initial state from local storage)
@@ -14,8 +12,8 @@ function App() {
   const [valueCounter, setValueCounter] = useState<number>(minValue);
   // Boolean value from input (valid/invalid)
   const [validInput, setValidInput] = useState<boolean>(true)
-  // Message in the counter
-  const [message, setMessage] = useState<MessageType>('')
+  // Visible components
+  const [visible, setVisible] = useState<boolean>(true)
 
 
   // FUNCTIONS
@@ -32,34 +30,31 @@ function App() {
     setMinValue(newMinValue);
     setValueCounter(newMinValue);
     setValidInput(true);
+    setVisible(!visible);
   }
 
   const changeValidInput = (valid: boolean) => {
     setValidInput(valid);
   }
 
-  const addMessage = (message: MessageType) => {
-    setMessage(message);
+  const changeRenderingComponent = () => {
+    setVisible(!visible);
   }
+
+  const renderingComponent = visible ? <Counter minValue={minValue} 
+                                                maxValue={maxValue} 
+                                                valueCounter={valueCounter}
+                                                increaseCounter={increaseCounter}
+                                                resetCounter={resetCounter} 
+                                                changeRenderingComponent={changeRenderingComponent}/> 
+                                    : <SettingCounter maxValue={maxValue} 
+                                                      minValue={minValue} 
+                                                      setNewValues={setNewValues}
+                                                      changeValidInput={changeValidInput}/> 
 
   // MARKUP
   return (
-    <div className="App">
-      <SettingCounter maxValue={maxValue} 
-                      minValue={minValue} 
-                      setNewValues={setNewValues}
-                      changeValidInput={changeValidInput}
-                      addMessage={addMessage}
-      />
-
-      <Counter  minValue={minValue} 
-                maxValue={maxValue} 
-                valueCounter={valueCounter}
-                message={message}
-                increaseCounter={increaseCounter}
-                resetCounter={resetCounter}
-      />
-    </div>
+    <div className="App">{renderingComponent}</div>
   );
 }
 

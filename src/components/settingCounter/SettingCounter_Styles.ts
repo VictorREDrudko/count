@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const WrapperCounter = styled.div`
-  max-width: 280px;
+  max-width: 380px;
   width: 100%;
   border: 3px solid rgb(128, 253, 106);
   border-radius: 10px;

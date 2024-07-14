@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "../button/Button"
 import { Input } from "../input/Input"
-import { MessageType } from "../../App";
 import { S } from "./SettingCounter_Styles"
 
 // TYPE PROPS
@@ -10,10 +9,9 @@ type SettingCounterType = {
   minValue: number
   setNewValues: (newMaxValue: number, newMinValue: number) => void
   changeValidInput: (valid: boolean) => void
-  addMessage: (message: MessageType) => void
 }
 
-export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValues, addMessage} : SettingCounterType)=> {
+export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValues} : SettingCounterType)=> {
   // LOCAL STATE 
   // Entered value from input
   const [maxEnteredValue, setMaxEnteredValue] = useState<number>(maxValue);
@@ -27,7 +25,6 @@ export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValu
 
     validMaxValueInput ? setDisabled(false) : setDisabled(true);
     validMaxValueInput ? changeValidInput(true) : changeValidInput(false);
-    validMaxValueInput ? addMessage('Enter values and press "set"') : addMessage('Incorrect value');
 
     setMaxEnteredValue(+valueInput);
   }
@@ -37,7 +34,6 @@ export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValu
 
     validMinValueInput ? setDisabled(false) : setDisabled(true);
     validMinValueInput ? changeValidInput(true) : changeValidInput(false);
-    validMinValueInput ? addMessage('Enter values and press "set"') : addMessage('Incorrect value');
 
     setMinEnteredValue(+valueInput);
   }
@@ -45,7 +41,6 @@ export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValu
   const onClickButtonHandler = () => {
     setNewValues(maxEnteredValue, minEnteredValue);
     setDisabled(true);
-    addMessage('');
     localStorage.setItem("maxValue", maxEnteredValue.toString())
     localStorage.setItem("minValue", minEnteredValue.toString())
   }
