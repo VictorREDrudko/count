@@ -1,53 +1,55 @@
-import { useState } from "react";
 import { Button } from "../button/Button"
 import { Input } from "../input/Input"
-import { MessageType } from "../../App";
 import { S } from "./SettingCounter_Styles"
+import { InitialStateType, MessageType } from "../../reducers/counter-reducer";
+import { InitialStateSettingsType } from "../../reducers/settings-counter-reducer";
 
 // TYPE PROPS
 type SettingCounterType = {
-  maxValue: number
-  minValue: number
-  setNewValues: (newMaxValue: number, newMinValue: number) => void
-  changeValidInput: (valid: boolean) => void
+  settings: InitialStateSettingsType
+  addDisabled: (valid: boolean) => void
   addMessage: (message: MessageType) => void
+  changeMaxValueSettings: (value: string) => void
+  changeMinValueSettings: (value: string) => void
+  setValueSettings: (newMaxValue: number, newMinValue: number) => void
 }
 
-export const SettingCounter = ({maxValue, minValue, changeValidInput, setNewValues, addMessage} : SettingCounterType)=> {
-  // LOCAL STATE 
-  // Entered value from input
-  const [maxEnteredValue, setMaxEnteredValue] = useState<number>(maxValue);
-  const [minEnteredValue, setMinEnteredValue] = useState<number>(minValue);
-  // Active/Inactive button
-  const [disabled, setDisabled] = useState(true)
+export const SettingCounter = (
+                                {addMessage,
+                                settings,
+                                changeMaxValueSettings, 
+                                changeMinValueSettings, 
+                                setValueSettings, 
+                                addDisabled} : SettingCounterType)=> {
+  
+  const disabled = settings.disabled;
+  const maxEnteredValue = settings.maxValueInput;
+  const minEnteredValue = settings.minValueInput;
 
-  // FUNCTIONS
   const changeMaxValue = (valueInput: string) => {
     const validMaxValueInput = +valueInput > minEnteredValue;
 
-    validMaxValueInput ? setDisabled(false) : setDisabled(true);
-    validMaxValueInput ? changeValidInput(true) : changeValidInput(false);
+    validMaxValueInput ? addDisabled(false) : addDisabled(true);
     validMaxValueInput ? addMessage('Enter values and press "set"') : addMessage('Incorrect value');
 
-    setMaxEnteredValue(+valueInput);
+    changeMaxValueSettings(valueInput)
   }
 
   const changeMinValue = (valueInput: string) => {
     const validMinValueInput = +valueInput < maxEnteredValue && +valueInput >= 0 ;
 
-    validMinValueInput ? setDisabled(false) : setDisabled(true);
-    validMinValueInput ? changeValidInput(true) : changeValidInput(false);
+    validMinValueInput ? addDisabled(false) : addDisabled(true);
     validMinValueInput ? addMessage('Enter values and press "set"') : addMessage('Incorrect value');
 
-    setMinEnteredValue(+valueInput);
+    changeMinValueSettings(valueInput)
   }
 
   const onClickButtonHandler = () => {
-    setNewValues(maxEnteredValue, minEnteredValue);
-    setDisabled(true);
+    addDisabled(true);
     addMessage('');
-    localStorage.setItem("maxValue", maxEnteredValue.toString())
-    localStorage.setItem("minValue", minEnteredValue.toString())
+    localStorage.setItem("maxValue", settings.maxValueInput.toString())
+    localStorage.setItem("minValue", settings.minValueInput.toString())
+    setValueSettings(settings.maxValueInput, settings.minValueInput)
   }
 
   // Style invalid input

@@ -1,30 +1,30 @@
-import styled from "styled-components"
 import { Button } from "../button/Button"
-import { MessageType } from "../../App"
 import { S } from "./../settingCounter/SettingCounter_Styles"
 import { s } from "./Counter_Styled"
+import { InitialStateType, MessageType } from "../../reducers/counter-reducer"
 
 type CounterType = {
-  minValue: number
-  maxValue: number
-  valueCounter: number
-  message: MessageType
+  counter: InitialStateType
   increaseCounter: () => void
   resetCounter: () => void
 }
 
-export const Counter = ({minValue, maxValue, valueCounter, message, increaseCounter, resetCounter}: CounterType) => {
+export const Counter = ({increaseCounter, resetCounter, counter}: CounterType) => {
+  const value = counter.valueCounter
+  const maxValue = counter.maxValue
+  const message = counter.message
+
   // Output ValueCounter and Message
-  const outputValueCounter = message ? '' : valueCounter;
-  const outputMessage = message ? message : '';
+  const outputValueCounter = message ? '' : value;
+  const outputMessage = message ? counter.message : '';
 
   // Change color ValueCounter and Message
-  const colorValueCount = valueCounter === maxValue ? {color: '#b00202'} : {};
+  const colorValueCount = value === maxValue ? {color: '#b00202'} : {};
   const colorMessage = message === "Incorrect value" ? {color: '#b00202'} : {};
 
   // Change disabled / active button
-  const setDisabledIncButton = message ? true : valueCounter === maxValue;
-  const setDisabledResetButton = message ? true : valueCounter === minValue
+  const setDisabledIncButton = message ? true : value === maxValue;
+  const setDisabledResetButton = message ? true : value === counter.minValue
 
   return (
     <S.WrapperCounter>
