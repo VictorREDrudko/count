@@ -1,20 +1,13 @@
-export type InitialStateSettingsType = {
-  maxValueInput: number,
-  minValueInput: number,
-  disabled: boolean
-}
+export type InitialStateSettingsType = typeof initialStateSettings
 
-const initialMaxValue = localStorage.getItem('maxValue') ? Number(localStorage.getItem('maxValue')) : 4
-const initialMinValue = localStorage.getItem('minValue') ? Number(localStorage.getItem('minValue')) : 1
-
-const initialStateSettings: InitialStateSettingsType = {
-  maxValueInput: initialMaxValue,
-  minValueInput: initialMinValue,
+const initialStateSettings = {
+  maxValueInput: 5,
+  minValueInput: 0,
   disabled: true
 }
 
 
-export const settingsCounterReducer = (state = initialStateSettings, action: ActionsType) => {
+export const settingsCounterReducer = (state: InitialStateSettingsType = initialStateSettings, action: ActionsType) : InitialStateSettingsType => {
 	switch (action.type) {
     case 'CHANGE_MAX_VALUE': {
       return {...state, maxValueInput: +action.payload.valueInput}

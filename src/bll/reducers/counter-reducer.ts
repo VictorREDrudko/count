@@ -1,26 +1,21 @@
-export type InitialStateType = {
-  minValue: number,
-  maxValue: number,
-  valueCounter: number,
-  message: MessageType,
-  validInput: boolean
-}
-
+export type InitialStateType = typeof initialStateCounter
 export type MessageType = 'Enter values and press "set"' | '' | 'Incorrect value'
 
-const initialMaxValue = localStorage.getItem('maxValue') ? Number(localStorage.getItem('maxValue')) : 4
-const initialMinValue = localStorage.getItem('minValue') ? Number(localStorage.getItem('minValue')) : 1
-
-const initialStateCounter: InitialStateType = {
-  maxValue: initialMaxValue,
-  minValue: initialMinValue,
+const initialStateCounter = {
+  maxValue: 5,
+  minValue: 0,
   valueCounter: 0,
   message: '',
   validInput: true
 }
 
+// Пример типизации объекта
+// const initialState = {
+//   user: {} as UserType
+// }
 
-export const counterReducer = (state = initialStateCounter, action: ActionsType) => {
+
+export const counterReducer = (state: InitialStateType = initialStateCounter, action: ActionsType) : InitialStateType => {
 	switch (action.type) {
     case 'INCREASE_COUNTER': {
       return {...state, valueCounter: state.valueCounter+=1}

@@ -1,8 +1,8 @@
 import { Button } from "../button/Button"
 import { Input } from "../input/Input"
 import { S } from "./SettingCounter_Styles"
-import { InitialStateType, MessageType } from "../../reducers/counter-reducer";
-import { InitialStateSettingsType } from "../../reducers/settings-counter-reducer";
+import { InitialStateType, MessageType } from "../../bll/reducers/counter-reducer";
+import { InitialStateSettingsType } from "../../bll/reducers/settings-counter-reducer";
 
 // TYPE PROPS
 type SettingCounterType = {

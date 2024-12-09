@@ -2,9 +2,9 @@ import './App.css';
 import { Counter } from '../components/counter/Counter';
 import { SettingCounter } from '../components/settingCounter/SettingCounter';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './store';
-import { increaseCounterAC, InitialStateType, messageCounterAC, MessageType, resetCounterAC, setValueCounterAC } from '../reducers/counter-reducer';
-import { changeMaxValueInputAC, changeMinValueInputAC, disabledSettingsAC, InitialStateSettingsType } from '../reducers/settings-counter-reducer';
+import { RootState } from '../bll/store';
+import { increaseCounterAC, InitialStateType, messageCounterAC, MessageType, resetCounterAC, setValueCounterAC } from '../bll/reducers/counter-reducer';
+import { changeMaxValueInputAC, changeMinValueInputAC, disabledSettingsAC, InitialStateSettingsType } from '../bll/reducers/settings-counter-reducer';
 
 function App() {
   const counter = useSelector<RootState, InitialStateType>(state => state.counter)

@@ -1,7 +1,7 @@
 import { Button } from "../button/Button"
 import { S } from "./../settingCounter/SettingCounter_Styles"
 import { s } from "./Counter_Styled"
-import { InitialStateType, MessageType } from "../../reducers/counter-reducer"
+import { InitialStateType, MessageType } from "../../bll/reducers/counter-reducer"
 
 type CounterType = {
   counter: InitialStateType
